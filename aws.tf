@@ -134,21 +134,35 @@ module "aws_security_group_generator_instance_private" {
 }
 
 module "aws" {
-  source                         = "./modules/f5xc/site/aws/tgw"
-  f5xc_tenant                    = var.f5xc_tenant
-  f5xc_api_url                   = var.f5xc_api_url
-  f5xc_aws_cred                  = var.f5xc_aws_creds
-  f5xc_api_token                 = var.f5xc_api_token
-  f5xc_namespace                 = var.f5xc_namespace
-  f5xc_aws_region                = var.aws_region
-  f5xc_aws_tgw_name              = format("%s-%s-%s", var.project_prefix, var.aws_tgw_name, var.project_suffix)
-  f5xc_aws_tgw_owner             = "c.klewar@ves.io"
-  f5xc_aws_tgw_no_worker_nodes   = true
-  f5xc_aws_default_ce_os_version = true
-  f5xc_aws_default_ce_sw_version = true
-  f5xc_aws_tgw_primary_ipv4      = var.f5xc_aws_tgw_primary_ipv4
-  f5xc_aws_vpc_attachment_ids    = [module.workload_vpc_a.aws_vpc["id"], module.workload_vpc_b.aws_vpc["id"]]
-  f5xc_aws_tgw_az_nodes          = {
+  source                             = "./modules/f5xc/site/aws/tgw"
+  f5xc_tenant                        = var.f5xc_tenant
+  f5xc_api_url                       = var.f5xc_api_url
+  f5xc_aws_cred                      = var.f5xc_aws_creds
+  f5xc_api_token                     = var.f5xc_api_token
+  f5xc_namespace                     = var.f5xc_namespace
+  f5xc_aws_region                    = var.aws_region
+  f5xc_aws_tgw_name                  = format("%s-%s-%s", var.project_prefix, var.aws_tgw_name, var.project_suffix)
+  f5xc_aws_tgw_owner                 = "c.klewar@ves.io"
+  f5xc_aws_tgw_no_worker_nodes       = true
+  f5xc_aws_default_ce_os_version     = true
+  f5xc_aws_default_ce_sw_version     = true
+  f5xc_aws_tgw_primary_ipv4          = var.f5xc_aws_tgw_primary_ipv4
+  f5xc_aws_vpc_attachment_ids        = [module.workload_vpc_a.aws_vpc["id"], module.workload_vpc_b.aws_vpc["id"]]
+  f5xc_active_forward_proxy_policies = [
+    {
+      name      = format("%s-forward-all-%s", var.project_prefix, var.project_suffix)
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
+    }
+  ]
+  f5xc_active_network_policies = [
+    {
+      name      = format("%s-allow-all-%s", var.project_prefix, var.project_suffix)
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
+    }
+  ]
+  f5xc_aws_tgw_az_nodes = {
     node0 : {
       f5xc_aws_tgw_workload_subnet = "192.168.168.0/26",
       f5xc_aws_tgw_inside_subnet   = "192.168.168.64/26",

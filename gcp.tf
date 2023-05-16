@@ -101,28 +101,42 @@ resource "google_compute_firewall" "spoke_b_ssh" {
 }
 
 module "gcp" {
-  source                            = "./modules/f5xc/site/gcp"
-  f5xc_tenant                       = var.f5xc_tenant
-  f5xc_api_url                      = var.f5xc_api_url
-  f5xc_gcp_cred                     = var.f5xc_gcp_cred
-  f5xc_api_token                    = var.f5xc_api_token
-  f5xc_namespace                    = var.f5xc_namespace
-  f5xc_gcp_region                   = var.gcp_region
-  f5xc_gcp_site_name                = format("%s-gcp-%s", var.project_prefix, var.project_suffix)
-  f5xc_gcp_zone_names               = ["us-east1-b", "us-east1-c", "us-east1-d"]
-  f5xc_gcp_ce_gw_type               = "multi_nic"
-  f5xc_gcp_node_number              = 3
-  f5xc_gcp_outside_network_name     = format("%s-gcp-outside-%s", var.project_prefix, var.project_suffix)
-  f5xc_gcp_outside_subnet_name      = format("%s-gcp-outside-%s", var.project_prefix, var.project_suffix)
-  f5xc_gcp_inside_network_name      = format("%s-gcp-inside-%s", var.project_prefix, var.project_suffix)
-  f5xc_gcp_inside_subnet_name       = format("%s-gcp-inside-%s", var.project_prefix, var.project_suffix)
-  f5xc_gcp_outside_primary_ipv4     = "10.102.32.0/24"
-  f5xc_gcp_inside_primary_ipv4      = "10.102.33.0/24"
-  f5xc_gcp_default_ce_sw_version    = true
-  f5xc_gcp_default_ce_os_version    = true
-  f5xc_gcp_default_blocked_services = true
-  ssh_public_key                    = file(var.ssh_public_key_file)
-  providers                         = {
+  source                             = "./modules/f5xc/site/gcp"
+  f5xc_tenant                        = var.f5xc_tenant
+  f5xc_api_url                       = var.f5xc_api_url
+  f5xc_gcp_cred                      = var.f5xc_gcp_cred
+  f5xc_api_token                     = var.f5xc_api_token
+  f5xc_namespace                     = var.f5xc_namespace
+  f5xc_gcp_region                    = var.gcp_region
+  f5xc_gcp_site_name                 = format("%s-gcp-%s", var.project_prefix, var.project_suffix)
+  f5xc_gcp_zone_names                = ["us-east1-b", "us-east1-c", "us-east1-d"]
+  f5xc_gcp_ce_gw_type                = "multi_nic"
+  f5xc_gcp_node_number               = 3
+  f5xc_gcp_outside_network_name      = format("%s-gcp-outside-%s", var.project_prefix, var.project_suffix)
+  f5xc_gcp_outside_subnet_name       = format("%s-gcp-outside-%s", var.project_prefix, var.project_suffix)
+  f5xc_gcp_inside_network_name       = format("%s-gcp-inside-%s", var.project_prefix, var.project_suffix)
+  f5xc_gcp_inside_subnet_name        = format("%s-gcp-inside-%s", var.project_prefix, var.project_suffix)
+  f5xc_gcp_outside_primary_ipv4      = "10.102.32.0/24"
+  f5xc_gcp_inside_primary_ipv4       = "10.102.33.0/24"
+  f5xc_gcp_default_ce_sw_version     = true
+  f5xc_gcp_default_ce_os_version     = true
+  f5xc_gcp_default_blocked_services  = true
+  f5xc_active_forward_proxy_policies = [
+    {
+      name      = format("%s-forward-all-%s", var.project_prefix, var.project_suffix)
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
+    }
+  ]
+  f5xc_active_network_policies = [
+    {
+      name      = format("%s-allow-all-%s", var.project_prefix, var.project_suffix)
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
+    }
+  ]
+  ssh_public_key = file(var.ssh_public_key_file)
+  providers      = {
     google = google.us-east1
   }
 }

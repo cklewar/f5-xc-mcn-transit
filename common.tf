@@ -33,3 +33,10 @@ resource "volterra_active_network_policies" "active" {
     tenant    = var.f5xc_tenant
   }
 }
+
+resource "volterra_forward_proxy_policy" "forward_all" {
+  name      = format("%s-forward-all-%s", var.project_prefix, var.project_suffix)
+  any_proxy = true
+  allow_all = true
+  namespace = var.f5xc_namespace
+}
