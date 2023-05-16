@@ -22,7 +22,6 @@ resource "volterra_network_policy" "allow_all" {
       all_traffic = true
     }
   }
-
 }
 
 resource "volterra_active_network_policies" "active" {
