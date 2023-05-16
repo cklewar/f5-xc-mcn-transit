@@ -28,7 +28,7 @@ module "f5xc_azure_marketplace_agreement_hub_multi_nic" {
 
 module "azure_resource_group" {
   source                    = "./modules/azure/resource_group"
-  azure_region              = var.f5xc_azure_region
+  azure_region              = var.azure_region
   azure_resource_group_name = format("%s-azure-hub-spoke-peer-rg-%s", var.project_prefix, var.project_suffix)
   providers                 = {
     azurerm = azurerm.eastus
@@ -37,7 +37,7 @@ module "azure_resource_group" {
 
 module "azure_vnet_spoke_a" {
   source                         = "./modules/azure/virtual_network"
-  azure_region                   = var.f5xc_azure_region
+  azure_region                   = var.azure_region
   azure_vnet_name                = format("%s-vnet-spoke-a-%s", var.project_prefix, var.project_suffix)
   azure_vnet_primary_ipv4        = "172.16.0.0/21"
   azure_vnet_resource_group_name = module.azure_resource_group.resource_group["name"]
@@ -48,7 +48,7 @@ module "azure_vnet_spoke_a" {
 
 module "azure_vnet_spoke_b" {
   source                         = "./modules/azure/virtual_network"
-  azure_region                   = var.f5xc_azure_region
+  azure_region                   = var.azure_region
   azure_vnet_name                = format("%s-vnet-spoke-b-%s", var.project_prefix, var.project_suffix)
   azure_vnet_primary_ipv4        = "172.16.8.0/21"
   azure_vnet_resource_group_name = module.azure_resource_group.resource_group["name"]
@@ -105,7 +105,7 @@ module "azure_virtual_machine_spoke_a" {
   source                     = "./modules/azure/linux_virtual_machine"
   azure_zone                 = element(var.azure_zones, 0)
   azure_zones                = var.azure_zones
-  azure_region               = var.f5xc_azure_region
+  azure_region               = var.azure_region
   azure_resource_group_name  = module.azure_resource_group.resource_group["name"]
   azure_virtual_machine_name = format("%s-azure-vm-spoke-a-%s", var.project_prefix, var.project_suffix)
   azure_network_interfaces   = [
@@ -120,7 +120,7 @@ module "azure_virtual_machine_spoke_a" {
     }
   ]
   azure_linux_virtual_machine_custom_data = base64encode(local.script_client_content)
-  public_ssh_key                          = file(var.ssh_public_key_file)
+  ssh_public_key                          = file(var.ssh_public_key_file)
   custom_tags                             = local.custom_tags
   providers                               = {
     azurerm = azurerm.eastus
@@ -131,7 +131,7 @@ module "azure_virtual_machine_spoke_b" {
   source                     = "./modules/azure/linux_virtual_machine"
   azure_zone                 = element(var.azure_zones, 0)
   azure_zones                = var.azure_zones
-  azure_region               = var.f5xc_azure_region
+  azure_region               = var.azure_region
   azure_resource_group_name  = module.azure_resource_group.resource_group["name"]
   azure_virtual_machine_name = format("%s-azure-vm-spoke-b-%s", var.project_prefix, var.project_suffix)
   azure_network_interfaces   = [
@@ -146,7 +146,7 @@ module "azure_virtual_machine_spoke_b" {
     }
   ]
   azure_linux_virtual_machine_custom_data = base64encode(local.script_server_content)
-  public_ssh_key                          = file(var.ssh_public_key_file)
+  ssh_public_key                          = file(var.ssh_public_key_file)
   custom_tags                             = local.custom_tags
   providers                               = {
     azurerm = azurerm.eastus
@@ -155,7 +155,7 @@ module "azure_virtual_machine_spoke_b" {
 
 module "azure_security_group_spoke_a" {
   source                       = "./modules/azure/security_group"
-  azure_region                 = var.f5xc_azure_region
+  azure_region                 = var.azure_region
   azure_resource_group_name    = module.azure_resource_group.resource_group["name"]
   azure_security_group_name    = format("%s-spoke-a-sg-%s", var.project_prefix, var.project_suffix)
   azurerm_network_interface_id = element(module.azure_virtual_machine_spoke_a.virtual_machine["network_interface_ids"], 0)
@@ -202,7 +202,7 @@ module "azure_security_group_spoke_a" {
 
 module "azure_security_group_spoke_b" {
   source                       = "./modules/azure/security_group"
-  azure_region                 = var.f5xc_azure_region
+  azure_region                 = var.azure_region
   azure_resource_group_name    = module.azure_resource_group.resource_group["name"]
   azure_security_group_name    = format("%s-spoke-b-sg-%s", var.project_prefix, var.project_suffix)
   azurerm_network_interface_id = element(module.azure_virtual_machine_spoke_b.virtual_machine["network_interface_ids"], 0)
@@ -275,9 +275,9 @@ module "azure" {
   f5xc_namespace                      = var.f5xc_namespace
   f5xc_tenant                         = var.f5xc_tenant
   f5xc_azure_cred                     = var.f5xc_azure_cred
-  f5xc_azure_region                   = var.f5xc_azure_region
-  f5xc_azure_site_name                = format("%s-hub-evns-%s", var.project_prefix, var.project_suffix)
-  f5xc_azure_vnet_site_resource_group = format("%s-hub-evns-rg-%s", var.project_prefix, var.project_suffix)
+  f5xc_azure_region                   = var.azure_region
+  f5xc_azure_site_name                = format("%s-hub-%s", var.project_prefix, var.project_suffix)
+  f5xc_azure_vnet_site_resource_group = format("%s-hub-rg-%s", var.project_prefix, var.project_suffix)
   f5xc_azure_vnet_primary_ipv4        = "172.16.32.0/21"
   f5xc_azure_ce_gw_type               = "multi_nic"
   f5xc_azure_az_nodes                 = {

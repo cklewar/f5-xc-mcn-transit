@@ -1,17 +1,8 @@
-variable "f5xc_azure_vnet_primary_ipv4" {
-  type    = string
-  default = "10.130.0.0/21"
-}
-
 variable "f5xc_aws_creds" {
   type = string
 }
 
 variable "f5xc_aws_tgw_primary_ipv4" {
-  type = string
-}
-
-variable "f5xc_aws_tgw_owner" {
   type = string
 }
 

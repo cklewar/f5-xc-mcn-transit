@@ -1,4 +1,8 @@
-variable "f5xc_azure_region" {
+variable "f5xc_azure_vnet_primary_ipv4" {
+  type = string
+}
+
+variable "azure_region" {
   type    = string
   default = "eastus"
 }

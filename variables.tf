@@ -1,7 +1,7 @@
 variable "project_prefix" {
   type        = string
   description = "prefix string put in front of string"
-  default     = "f5xc"
+  default     = "f5xc-mcn"
 }
 
 variable "project_suffix" {
