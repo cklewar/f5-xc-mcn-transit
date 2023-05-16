@@ -285,6 +285,14 @@ module "azure" {
       f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet = "172.16.32.0/24",
       f5xc_azure_vnet_outside_subnet = "172.16.33.0/24"
     }
+    node1 : {
+      f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet = "172.16.34.0/24",
+      f5xc_azure_vnet_outside_subnet = "172.16.35.0/24"
+    }
+    node2 : {
+      f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet = "172.16.36.0/24",
+      f5xc_azure_vnet_outside_subnet = "172.16.37.0/24"
+    }
   }
   f5xc_azure_hub_spoke_vnets = [
     {
@@ -318,6 +326,20 @@ module "azure" {
       address_prefix   = format("%s/32", data.http.host_ip.response_body)
       route_table_name = format("rt-%s-vnet-spoke-b-%s", var.project_prefix, var.project_suffix)
       next_hop_type    = "Internet"
+    }
+  ]
+  f5xc_active_forward_proxy_policies = [
+    {
+      name      = format("%s-forward-all-%s", var.project_prefix, var.project_suffix)
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
+    }
+  ]
+  f5xc_active_network_policies = [
+    {
+      name      = format("%s-allow-all-%s", var.project_prefix, var.project_suffix)
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
     }
   ]
   f5xc_azure_default_blocked_services = false
