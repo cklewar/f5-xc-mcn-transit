@@ -429,7 +429,7 @@ zsdoc/data
 
 ck.tfvars.json
 ck_gcp_creds.json
-ck.tf
+azure.tf
 *.p12
 
 .idea
