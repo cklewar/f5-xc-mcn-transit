@@ -148,7 +148,7 @@ data "google_compute_network" "hub" {
   depends_on = [module.gcp]
   name       = format("%s-gcp-%s", var.project_prefix, var.project_suffix)
   project    = var.gcp_project_id
-  provider                        = google.us-east1
+  provider   = google.us-east1
 }
 
 resource "google_compute_network_peering" "spoke_a" {
@@ -157,7 +157,7 @@ resource "google_compute_network_peering" "spoke_a" {
   peer_network         = data.google_compute_network.hub.self_link
   import_custom_routes = true
   export_custom_routes = true
-  provider                        = google.us-east1
+  provider             = google.us-east1
 }
 
 resource "google_compute_network_peering" "spoke_b" {
@@ -166,5 +166,5 @@ resource "google_compute_network_peering" "spoke_b" {
   peer_network         = data.google_compute_network.hub.self_link
   import_custom_routes = true
   export_custom_routes = true
-  provider                        = google.us-east1
+  provider             = google.us-east1
 }
