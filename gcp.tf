@@ -113,7 +113,7 @@ module "gcp" {
   f5xc_gcp_site_name                 = format("%s-gcp-%s", var.project_prefix, var.project_suffix)
   f5xc_gcp_zone_names                = ["us-east1-b"] #,"us-east1-c", "us-east1-d"]
   f5xc_gcp_ce_gw_type                = "multi_nic"
-  f5xc_gcp_node_number               = 1
+  f5xc_gcp_node_number               = "1"
   f5xc_gcp_outside_network_name      = format("%s-gcp-outside-%s", var.project_prefix, var.project_suffix)
   f5xc_gcp_outside_subnet_name       = format("%s-gcp-outside-%s", var.project_prefix, var.project_suffix)
   f5xc_gcp_inside_network_name       = format("%s-gcp-inside-%s", var.project_prefix, var.project_suffix)
@@ -130,13 +130,13 @@ module "gcp" {
       namespace = var.f5xc_namespace
     }
   ]
-  f5xc_active_network_policies = [
+  /*f5xc_active_network_policies = [
     {
       name      = format("%s-allow-all-%s", var.project_prefix, var.project_suffix)
       tenant    = var.f5xc_tenant
       namespace = var.f5xc_namespace
     }
-  ]
+  ]*/
   ssh_public_key = file(var.ssh_public_key_file)
   providers      = {
     volterra = volterra.default
