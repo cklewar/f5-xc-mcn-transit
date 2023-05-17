@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+sudo apt-get update
+sudo apt-get -y install --no-install-recommends curl net-tools tcpdump traceroute iputils-ping jq wget iperf3
+(crontab -l ; echo "*/15 * * * * iperf3 -c ${server_ip}") | crontab -

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+sudo apt-get update
+sudo apt-get -y install --no-install-recommends curl net-tools tcpdump traceroute iputils-ping jq wget iperf3
+
+sudo cat << EOF > /etc/systemd/system/iperf.service
+# /etc/systemd/system/iperf.service
+[Unit]
+Description=iperf3 server
+After=syslog.target network.target auditd.service
+
+[Service]
+ExecStart=/usr/bin/iperf3 -s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl start iperf
