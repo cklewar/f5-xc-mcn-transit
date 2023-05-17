@@ -1,30 +1,11 @@
-provider "volterra" {
-  api_p12_file = var.f5xc_api_p12_file
-  url          = var.f5xc_api_url
-  alias        = "default"
-}
-
-provider "azurerm" {
-  client_id       = var.azure_client_id
-  client_secret   = var.azure_client_secret
-  tenant_id       = var.azure_tenant_id
-  subscription_id = var.azure_subscription_id
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
-  alias = "eastus"
-}
-
-module "f5xc_azure_marketplace_agreement_hub_multi_nic" {
+/*module "f5xc_azure_marketplace_agreement_hub_multi_nic" {
   source                = "./modules/azure/agreement"
   azure_client_id       = var.azure_client_id
   azure_client_secret   = var.azure_client_secret
   azure_tenant_id       = var.azure_tenant_id
   azure_subscription_id = var.azure_subscription_id
   f5xc_azure_ce_gw_type = "multi_nic"
-}
+}*/
 
 module "azure_resource_group" {
   source                    = "./modules/azure/resource_group"
@@ -101,7 +82,7 @@ module "azure_subnet_spoke_b_outside" {
   }
 }
 
-module "azure_virtual_machine_spoke_a" {
+/*module "azure_virtual_machine_spoke_a" {
   source                     = "./modules/azure/linux_virtual_machine"
   azure_zone                 = element(var.azure_zones, 0)
   azure_zones                = var.azure_zones
@@ -265,7 +246,7 @@ output "script_client_server_content" {
     "client" = local.script_client_content
     "server" = local.script_server_content
   }
-}
+}*/
 
 module "azure" {
   # depends_on                          = [module.f5xc_azure_marketplace_agreement_hub_multi_nic]
@@ -285,14 +266,14 @@ module "azure" {
       f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet = "172.16.32.0/24",
       f5xc_azure_vnet_outside_subnet = "172.16.33.0/24"
     }
-    node1 : {
+    /*node1 : {
       f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet = "172.16.34.0/24",
       f5xc_azure_vnet_outside_subnet = "172.16.35.0/24"
     }
     node2 : {
       f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet = "172.16.36.0/24",
       f5xc_azure_vnet_outside_subnet = "172.16.37.0/24"
-    }
+    }*/
   }
   f5xc_azure_hub_spoke_vnets = [
     {

@@ -169,7 +169,7 @@ module "aws" {
       f5xc_aws_tgw_outside_subnet  = "192.168.168.128/26",
       f5xc_aws_tgw_az_name         = format("%s%s", var.aws_region, "a")
     },
-    node1 : {
+    /*node1 : {
       f5xc_aws_tgw_workload_subnet = "192.168.169.0/26",
       f5xc_aws_tgw_inside_subnet   = "192.168.169.64/26",
       f5xc_aws_tgw_outside_subnet  = "192.168.169.128/26",
@@ -180,7 +180,7 @@ module "aws" {
       f5xc_aws_tgw_inside_subnet   = "192.168.170.64/26",
       f5xc_aws_tgw_outside_subnet  = "192.168.170.128/26",
       f5xc_aws_tgw_az_name         = format("%s%s", var.aws_region, "c")
-    }
+    }*/
   }
   ssh_public_key = file(var.ssh_public_key_file)
   custom_tags    = local.custom_tags
@@ -197,7 +197,7 @@ module "apply_timeout_workaround" {
   delete_timeout = "180s"
 }
 
-module "generator" {
+/*module "generator" {
   source                           = "./modules/aws/ec2"
   owner                            = var.owner_tag
   custom_tags                      = local.custom_tags
@@ -249,4 +249,4 @@ module "generator" {
   providers                = {
     aws = aws.default
   }
-}
+}*/

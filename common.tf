@@ -1,6 +1,7 @@
 resource "volterra_network_policy" "allow_all" {
   name      = format("%s-allow-all-%s", var.project_prefix, var.project_suffix)
   namespace = var.f5xc_namespace
+  provider  = volterra.default
   endpoint {
     any = true
   }
@@ -27,6 +28,7 @@ resource "volterra_network_policy" "allow_all" {
 resource "volterra_active_network_policies" "active" {
   depends_on = [volterra_network_policy.allow_all]
   namespace  = var.f5xc_namespace
+  provider   = volterra.default
   policies {
     name      = format("%s-allow-all-%s", var.project_prefix, var.project_suffix)
     namespace = var.f5xc_namespace
@@ -36,6 +38,7 @@ resource "volterra_active_network_policies" "active" {
 
 resource "volterra_forward_proxy_policy" "forward_all" {
   name      = format("%s-forward-all-%s", var.project_prefix, var.project_suffix)
+  provider  = volterra.default
   any_proxy = true
   allow_all = true
   namespace = var.f5xc_namespace
