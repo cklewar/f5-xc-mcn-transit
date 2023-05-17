@@ -31,6 +31,10 @@ variable "f5xc_api_token" {
   type = string
 }
 
+variable "f5xc_aws_tgw_owner" {
+  type = string
+}
+
 variable "ssh_public_key_file" {
   type = string
 }

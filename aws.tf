@@ -142,7 +142,7 @@ module "aws" {
   f5xc_namespace                     = var.f5xc_namespace
   f5xc_aws_region                    = var.aws_region
   f5xc_aws_tgw_name                  = format("%s-%s-%s", var.project_prefix, var.aws_tgw_name, var.project_suffix)
-  f5xc_aws_tgw_owner                 = "c.klewar@ves.io"
+  f5xc_aws_tgw_owner                 = var.f5xc_aws_tgw_owner
   f5xc_aws_tgw_no_worker_nodes       = true
   f5xc_aws_default_ce_os_version     = true
   f5xc_aws_default_ce_sw_version     = true
@@ -157,9 +157,9 @@ module "aws" {
   ]
   f5xc_active_network_policies = [
     {
-      name      = format("%s-allow-all-%s", var.project_prefix, var.project_suffix)
+      name      = volterra_network_policy.allow_all.name
       tenant    = var.f5xc_tenant
-      namespace = var.f5xc_namespace
+      namespace = module.app_namespace.namespace["name"]
     }
   ]
   f5xc_aws_tgw_az_nodes = {
