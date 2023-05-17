@@ -155,13 +155,13 @@ module "aws" {
       namespace = var.f5xc_namespace
     }
   ]
-  f5xc_active_network_policies = [
+  /*f5xc_active_network_policies = [
     {
       name      = volterra_network_policy.allow_all.name
       tenant    = var.f5xc_tenant
       namespace = module.app_namespace.namespace["name"]
     }
-  ]
+  ]*/
   f5xc_aws_tgw_az_nodes = {
     node0 : {
       f5xc_aws_tgw_workload_subnet = "192.168.168.0/26",
