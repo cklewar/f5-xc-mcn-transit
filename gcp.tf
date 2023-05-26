@@ -146,13 +146,26 @@ module "gcp" {
 
 data "google_compute_network" "hub" {
   depends_on = [module.gcp]
-  name       = format("%s-gcp-%s", var.project_prefix, var.project_suffix)
+  name       = format("%s-gcp-inside-%s", var.project_prefix, var.project_suffix)
   project    = var.gcp_project_id
   provider   = google.us-east1
 }
 
-resource "google_compute_network_peering" "spoke_a" {
+output hub_network {
+  value = data.google_compute_network.hub
+}
+
+resource "google_compute_network_peering" "hub_to_spoke_a" {
   name                 = format("%s-hub-spoke-a-%s", var.project_prefix, var.project_suffix)
+  network              = data.google_compute_network.hub.self_link
+  peer_network         = google_compute_network.spoke_a.self_link
+  import_custom_routes = true
+  export_custom_routes = true
+  provider             = google.us-east1
+}
+
+resource "google_compute_network_peering" "spoke_a_to_hub" {
+  name                 = format("%s-spoke-a-hub-%s", var.project_prefix, var.project_suffix)
   network              = google_compute_network.spoke_a.self_link
   peer_network         = data.google_compute_network.hub.self_link
   import_custom_routes = true
@@ -160,7 +173,16 @@ resource "google_compute_network_peering" "spoke_a" {
   provider             = google.us-east1
 }
 
-resource "google_compute_network_peering" "spoke_b" {
+resource "google_compute_network_peering" "hub_to_spoke_b" {
+  name                 = format("%s-hub-spoke-b-%s", var.project_prefix, var.project_suffix)
+  network              = data.google_compute_network.hub.self_link
+  peer_network         = google_compute_network.spoke_b.self_link
+  import_custom_routes = true
+  export_custom_routes = true
+  provider             = google.us-east1
+}
+
+resource "google_compute_network_peering" "spoke_b_to_hub" {
   name                 = format("%s-hub-spoke-b-%s", var.project_prefix, var.project_suffix)
   network              = google_compute_network.spoke_b.self_link
   peer_network         = data.google_compute_network.hub.self_link

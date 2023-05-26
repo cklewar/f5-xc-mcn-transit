@@ -316,13 +316,13 @@ module "azure" {
       namespace = var.f5xc_namespace
     }
   ]
-  f5xc_active_network_policies = [
+  /*f5xc_active_network_policies = [
     {
       name      = format("%s-allow-all-%s", var.project_prefix, var.project_suffix)
       tenant    = var.f5xc_tenant
       namespace = var.f5xc_namespace
     }
-  ]
+  ]*/
   f5xc_azure_default_blocked_services = false
   f5xc_azure_default_ce_sw_version    = true
   f5xc_azure_default_ce_os_version    = true
