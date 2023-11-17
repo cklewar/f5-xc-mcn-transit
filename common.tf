@@ -1,7 +1,8 @@
 module "app_namespace" {
-  source              = "./modules/f5xc/namespace"
-  f5xc_namespace_name = format("%s-transit-%s", var.project_prefix, var.project_suffix)
-  providers           = {
+  source                        = "./modules/f5xc/namespace"
+  f5xc_namespace_name           = format("%s-transit-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace_create_timeout = "5s"
+  providers                     = {
     volterra = volterra.default
   }
 }
